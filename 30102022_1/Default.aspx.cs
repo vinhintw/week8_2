@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using System.Diagnostics;
+
 namespace _30102022_1
 {
     public partial class _Default : Page
@@ -26,13 +28,18 @@ namespace _30102022_1
 
                 
                 x.Open();
-                sql = "select * from [table] where daily=N'107 y 4 m 2 d' ";
+                string temp = "select * from [table] where daily=N'107y";
+                sql = temp + TextBox3.Text +"m"+ TextBox2.Text + "d'";
+                Debug.WriteLine("SQL= " + sql);
                 Label2.Text = sql;
                 cmd = new SqlCommand(sql, x);
                 cmd.ExecuteNonQuery();
                 reader = cmd.ExecuteReader();
                 if (reader.Read() == true ) {
                     TextBox1.Text = Convert.ToString(reader["content"]);
+                    string path = "/Images/";
+                    string file = reader["pictures"].ToString().Trim();
+                    Image1.ImageUrl = path + file;
                 }
                 x.Close();
             }
